@@ -1,11 +1,5 @@
-import os, sys
-
-niaPath = os.path.abspath("../NiaPy")
-sys.path.insert(0, niaPath)
-
-import NiaPy
-
 from util import mediums
+from NiaPy.algorithms.basic import BatAlgorithm, FireflyAlgorithm
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -28,15 +22,12 @@ class Brachistochrone(object):
             return env.calculateFitness(sol)
         return evaluate
 
-algorithms = ['DifferentialEvolutionAlgorithm']
-benchmarks = [Brachistochrone()]
+# algo = BatAlgorithm(15, 100, 10000, 0.5, 0.5, 0.1, 0.9, Brachistochrone())
+# algo.best
+# algo = FireflyAlgorithm(15, 100, 10000, 0.5, 0.5, 0.5, Brachistochrone())
+# algo.Fireflies[0]
 
-results = NiaPy.Runner(15, 100, 10000, 1, algorithms, benchmarks).run()
+algo.run()
 
-solution, time = results['DifferentialEvolutionAlgorithm']['Brachistochrone'][0]
-error = np.sum(env.calculateError(solution))
-
-print(error)
-
-env.drawSolution(solution)
+env.drawSolution()
 plt.show()
