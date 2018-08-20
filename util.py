@@ -148,7 +148,7 @@ class mediums:
 
             step += 1
 
-        return errors
+        return np.sum(errors)
 
 # 
 # TODO: Earth-Like environment
