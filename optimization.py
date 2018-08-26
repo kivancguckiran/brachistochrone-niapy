@@ -23,7 +23,7 @@ class Brachistochrone(object):
         return evaluate
 
 
-env = mediums(500, 500, 15)
+env = mediums(250, 500, 15)
 # env = gravity(1000, 500, 15)
 
 D = 15

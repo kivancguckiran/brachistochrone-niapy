@@ -41,7 +41,7 @@ class mediums:
         self.endY = 0
         self.size = size
 
-        self.speeds = np.logspace(1, 1.75, num=self.size + 1, base=10)
+        self.speeds = np.linspace(100, 1000, num=self.size + 1)
         self.positions = []
 
         position = 0
