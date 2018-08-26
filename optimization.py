@@ -9,7 +9,7 @@ import numpy as np
 sys.path.append(os.path.abspath("../NiaPy"))
 
 import NiaPy
-from util import mediums, gradient
+from util import mediums, gravity
 
 
 class Brachistochrone(object):
@@ -24,7 +24,7 @@ class Brachistochrone(object):
 
 
 env = mediums(500, 500, 15)
-# env = gradient(1000, 500, 15)
+# env = gravity(1000, 500, 15)
 
 D = 15
 nGEN = 1000
@@ -69,20 +69,3 @@ print('BBFA\t', bbfa_errors, '\t', bbfa_times)
 print('HBA\t', hba_errors, '\t', hba_times)
 print('DPSADE\t', dpsade_errors, '\t', dpsade_times)
 print('SADE\t', sade_errors, '\t', sade_times)
-
-env.drawSolution(abc_solution)
-plt.show()
-env.drawSolution(de_solution)
-plt.show()
-env.drawSolution(es1_solution)
-plt.show()
-env.drawSolution(esm_solution)
-plt.show()
-env.drawSolution(bbfa_solution)
-plt.show()
-env.drawSolution(hba_solution)
-plt.show()
-env.drawSolution(dpsade_solution)
-plt.show()
-env.drawSolution(sade_solution)
-plt.show()

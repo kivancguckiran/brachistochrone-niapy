@@ -61,6 +61,7 @@ class mediums:
 
         x = np.arange(0, self.mapX)
         colors = gradient((255, 255, 255), (75, 75, 75), self.size + 1)
+
         for idx in np.arange(len(self.positions) + 1):
             if idx == 0:
                 plt.fill_between(x, 0, self.positions[idx], facecolor=colors[idx])
@@ -160,7 +161,7 @@ class mediums:
 
         return np.sum(errors)
 
-class gradient:
+class gravity:
     def __init__(self, mapX, mapY, size):
         self.mapX = mapX
         self.mapY = mapY
