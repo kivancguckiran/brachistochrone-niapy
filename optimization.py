@@ -23,13 +23,13 @@ class Brachistochrone(object):
         return evaluate
 
 
-env = mediums(250, 500, 15)
+env = mediums(1000, 500, 15)
 # env = gravity(1000, 500, 15)
 
 D = 15
 nGEN = 1000
 
-epoch = 10
+epoch = 1
 
 def optimize(optimizer):
   solutions = []

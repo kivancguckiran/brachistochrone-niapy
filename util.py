@@ -24,9 +24,12 @@ def gradient(a, b, steps):
 def speedFunction(y):
     return 510 - y**2 / 500
 
+def averageSpeed(y1, y2):
+    return abs(quad(speedFunction, y1, y2)[0] / (y2 - y1))
+
 def getTimeBetween(x1, y1, x2, y2):
     length = np.sqrt(np.square(y2 - y1) + np.square(x2 - x1))
-    avgSpeed = abs(quad(speedFunction, y1, y2)[0] / (y2 - y1))
+    avgSpeed = averageSpeed(y1, y2)
     time = length / avgSpeed
     return time
 
@@ -40,8 +43,6 @@ class mediums:
         self.endX = mapX
         self.endY = 0
         self.size = size
-
-        self.speeds = np.linspace(100, 1000, num=self.size + 1)
         self.positions = []
 
         position = 0
@@ -54,6 +55,14 @@ class mediums:
         self.positions = (self.positions / max(self.positions)) * self.mapY
         self.positions = np.delete(self.positions, -1)
         self.positions = np.delete(self.positions, 0)
+
+        self.speeds = []
+
+        self.speeds.append(averageSpeed(self.startX, self.positions[0]))
+        for idx in np.arange(len(self.positions) - 1):
+            self.speeds.append(averageSpeed(self.positions[idx], self.positions[idx + 1]))
+        self.speeds.append(averageSpeed(self.positions[len(self.positions) - 1], self.mapY))
+        self.speeds = np.flip(self.speeds, 0)
 
     def initPlot(self):
         plt.cla()
