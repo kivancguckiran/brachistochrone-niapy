@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from scipy.integrate import quad
 
 
 def arrayMultiply(array, c):
@@ -19,6 +20,15 @@ def gradient(a, b, steps):
     for step in steps:
         colors.append(tuple([x / 255 for x in list(intermediate(a, b, step))]))
     return colors
+
+def speedFunction(y):
+    return 510 - y**2 / 500
+
+def getTimeBetween(x1, y1, x2, y2):
+    length = np.sqrt(np.square(y2 - y1) + np.square(x2 - x1))
+    avgSpeed = abs(quad(speedFunction, y1, y2)[0] / (y2 - y1))
+    time = length / avgSpeed
+    return time
 
 
 class mediums:
@@ -150,6 +160,82 @@ class mediums:
 
         return np.sum(errors)
 
-# 
-# TODO: Earth-Like environment
-# 
+class gradient:
+    def __init__(self, mapX, mapY, size):
+        self.mapX = mapX
+        self.mapY = mapY
+        self.startX = 0
+        self.startY = mapY
+        self.endX = mapX
+        self.endY = 0
+        self.size = size
+
+        self.positions = []
+
+        position = 0
+
+        for diff in np.logspace(1, 1.25, num=self.size + 2, base=10):
+            self.positions.append(position)
+            position = position + diff
+
+        self.positions = np.asarray(self.positions)
+        self.positions = (self.positions / max(self.positions)) * self.mapY
+        self.positions = np.delete(self.positions, -1)
+        self.positions = np.delete(self.positions, 0)
+
+    def initPlot(self):
+        plt.cla()
+        plt.axis([0, self.mapX, 0, self.mapY])
+
+    def calculateFitness(self, individual):
+        time = 0
+        step = 0
+
+        currentX = self.startX
+        currentY = self.startY
+
+        for gene in individual:
+            x = gene * self.mapX
+            y = self.positions[self.size - 1 - step]
+
+            time += getTimeBetween(currentX, currentY, x, y)
+
+            currentX = x
+            currentY = y
+
+            step += 1
+
+        time += getTimeBetween(currentX, currentY, self.endX, self.endY)
+
+        return time
+
+    def drawSolution(self, solution):
+        self.initPlot()
+
+        currentX = self.startX
+        currentY = self.startY
+
+        step = 0
+
+        for gene in solution:
+            x = gene * self.mapX
+            y = self.positions[self.size - 1 - step]
+
+            step += 1
+
+            xPos = [currentX, x]
+            yPos = [currentY, y]
+
+            plt.plot(xPos, yPos, color='r')
+
+            currentX = x
+            currentY = y
+
+        xPos = [currentX, self.endX]
+        yPos = [currentY, self.endY]
+
+        plt.plot(xPos, yPos, color='r')
+        plt.pause(0.001)
+
+    def calculateError(self, solution):
+        return self.calculateFitness(solution)
